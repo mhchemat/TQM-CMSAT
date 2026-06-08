@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>TQM-CMSAT | Semak Syarikat Anda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0e0e14;
+  --surface:  #16161f;
+  --card:     #1e1e2a;
+  --border:   #2a2a38;
+  --gold:     #f5c842;
+  --gold-dim: #a88620;
+  --coral:    #ff6b6b;
+  --mint:     #4ecdc4;
+  --violet:   #a78bfa;
+  --text:     #f0f0f5;
+  --muted:    #7a7a9a;
+  --radius:   20px;
+  --radius-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Sora',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  max-width:430px;
+  margin:0 auto;
+  position:relative;
+}
+
+/* ── SCREENS ── */
+.screen{display:none;flex-direction:column;height:100vh;overflow:hidden}
+.screen.active{display:flex}
+.scroll-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+.scroll-body::-webkit-scrollbar{display:none}
+
+/* ── WELCOME ── */
+#sw{background:var(--bg)}
+.w-hero{
+  padding:56px 28px 32px;
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,#2a1f6e 0%,transparent 70%);
+  text-align:center;
+  flex-shrink:0;
+}
+.w-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);
+  color:var(--gold);font-size:11px;font-weight:600;letter-spacing:1.2px;
+  text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:28px;
+}
+.w-icon{
+  width:80px;height:80px;border-radius:24px;margin:0 auto 20px;
+  background:linear-gradient(135deg,#f5c842,#ff9f43);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;
+  box-shadow:0 0 40px rgba(245,200,66,.35);
+}
+.w-title{font-size:27px;font-weight:800;line-height:1.2;margin-bottom:10px;letter-spacing:-.3px}
+.w-title span{
+  background:linear-gradient(90deg,#f5c842,#ff9f43);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.w-sub{font-size:14px;color:var(--muted);line-height:1.6}
+
+.w-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  padding:0 28px 28px;flex-shrink:0;
+}
+.stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px 8px;text-align:center;
+}
+.stat-n{font-size:24px;font-weight:800;color:var(--gold);display:block}
+.stat-l{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.3}
+
+.w-bottom{
+  background:var(--surface);
+  border-radius:28px 28px 0 0;
+  border-top:1px solid var(--border);
+  padding:28px 28px 0;
+  flex:1;overflow-y:auto;
+}
+.w-bottom h2{font-size:18px;font-weight:700;margin-bottom:8px}
+.w-bottom p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.steps{list-style:none;margin-bottom:28px}
+.steps li{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;font-size:14px;color:var(--muted)}
+.sdot{
+  width:26px;height:26px;border-radius:8px;
+  background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:1px;
+}
+
+/* ── PROFILE ── */
+#sp{background:var(--bg)}
+.p-header{
+  padding:56px 28px 28px;
+  background:radial-gradient(ellipse 120% 60% at 50% -10%,#1a1a40 0%,transparent 70%);
+  flex-shrink:0;
+}
+.p-header h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.p-header p{font-size:14px;color:var(--muted)}
+.p-body{padding:24px 28px;flex:1;overflow-y:auto}
+.flabel{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;display:block;letter-spacing:.3px}
+.flabel-sub{font-weight:400;color:var(--muted)}
+.fgroup{margin-bottom:24px}
+.og5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.og2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.obtn{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 6px;
+  text-align:center;font-family:inherit;font-size:15px;
+  font-weight:700;color:var(--muted);cursor:pointer;
+  transition:all .15s;
+}
+.obtn .os{display:block;font-size:10px;font-weight:400;margin-top:3px;color:var(--muted)}
+.obtn.sel{background:rgba(245,200,66,.12);border-color:var(--gold);color:var(--gold)}
+.obtn.sel .os{color:var(--gold-dim)}
+.obtn:active{transform:scale(.96)}
+
+/* ── QUESTION ── */
+#sq{background:var(--bg)}
+.q-header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:52px 20px 16px;
+  flex-shrink:0;
+}
+.q-toprow{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
+}
+.q-sec{
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);
+}
+.q-count{font-size:12px;color:var(--muted)}
+.pbar-out{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.pbar-in{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold),#ff9f43);
+  transition:width .4s ease;
+}
+.q-body{padding:28px 24px 0;flex:1;overflow-y:auto}
+.q-code{
+  display:inline-block;
+  background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);
+  color:var(--violet);font-size:11px;font-weight:700;letter-spacing:1px;
+  padding:4px 12px;border-radius:6px;margin-bottom:18px;
+}
+.q-text{
+  font-size:19px;font-weight:700;line-height:1.45;color:var(--text);margin-bottom:32px;
+}
+.aopts{display:flex;flex-direction:column;gap:10px;padding-bottom:28px}
+.abtn{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:all .15s;
+  text-align:left;font-family:inherit;width:100%;
+}
+.abtn:active{transform:scale(.98)}
+.abtn.sel{background:rgba(245,200,66,.08);border-color:var(--gold)}
+.ascore{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:800;color:var(--muted);flex-shrink:0;
+  transition:all .15s;
+}
+.abtn.sel .ascore{background:var(--gold);border-color:var(--gold);color:#111}
+.alabel{font-size:14px;font-weight:500;color:var(--muted);line-height:1.35;transition:color .15s}
+.abtn.sel .alabel{color:var(--text);font-weight:600}
+
+/* ── NAV BAR ── */
+.nav{
+  display:flex;gap:10px;padding:14px 20px;
+  background:var(--surface);border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.nbk{
+  width:50px;height:50px;border-radius:14px;
+  border:1.5px solid var(--border);background:transparent;
+  color:var(--muted);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;
+}
+.nbk:active{transform:scale(.95)}
+.npri{
+  flex:1;height:50px;
+  background:linear-gradient(135deg,#f5c842,#ff9f43);
+  color:#111;border:none;border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:800;
+  cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  letter-spacing:.2px;
+}
+.npri:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.npri:not(:disabled):active{transform:scale(.98)}
+.nsec{
+  flex:1;height:50px;background:transparent;
+  border:1.5px solid var(--border);border-radius:14px;
+  font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.nsec:active{transform:scale(.98)}
+
+/* ── RESULTS ── */
+#sr{background:var(--bg)}
+.r-hero{
+  padding:52px 24px 28px;
+  background:radial-gradient(ellipse 140% 80% at 50% -10%,#1e1340 0%,transparent 65%);
+  text-align:center;flex-shrink:0;
+}
+.r-hero h2{font-size:24px;font-weight:800;margin-bottom:8px}
+.r-hero p{font-size:13px;color:var(--muted);line-height:1.6}
+.overall-chip{
+  display:inline-block;margin-top:18px;
+  background:linear-gradient(135deg,#f5c842,#ff9f43);
+  color:#111;font-size:13px;font-weight:800;
+  padding:10px 24px;border-radius:20px;
+  letter-spacing:.3px;
+}
+.r-body{padding:20px 20px 0}
+.rcard{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;margin-bottom:14px;
+}
+.rcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.rcard-title{font-size:15px;font-weight:700;color:var(--text)}
+.rcard-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.lchip{
+  font-size:11px;font-weight:700;padding:5px 12px;
+  border-radius:20px;white-space:nowrap;flex-shrink:0;margin-left:8px;
+}
+.l1{background:rgba(255,107,107,.15);color:#ff6b6b}
+.l2{background:rgba(255,159,67,.15);color:#ff9f43}
+.l3{background:rgba(245,200,66,.15);color:#f5c842}
+.l4{background:rgba(78,205,196,.15);color:#4ecdc4}
+.l5{background:rgba(123,237,159,.15);color:#7bed9f}
+.ptrack{height:8px;background:var(--surface);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.pfill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.rcard-footer{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.rcard-footer strong{color:var(--text)}
+
+/* insights */
+.icard{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;margin-bottom:14px;
+}
+.icard h3{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.iitem{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+.iitem:last-child{border:none}
+.iico{font-size:20px;flex-shrink:0;margin-top:1px}
+.itxt{font-size:13px;line-height:1.55;color:var(--muted)}
+.itxt strong{color:var(--gold);display:block;font-size:12px;font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+
+.pitem{
+  background:rgba(245,200,66,.06);
+  border:1px solid rgba(245,200,66,.2);
+  border-left:3px solid var(--gold);
+  border-radius:12px;padding:12px 14px;
+  font-size:13px;color:var(--muted);
+  line-height:1.55;margin-bottom:10px;
+}
+.pitem-label{
+  font-size:11px;font-weight:700;color:var(--gold-dim);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;
+}
+
+.r-actions{padding:16px 20px 12px;display:flex;flex-direction:column;gap:10px}
+.abtn-gold{
+  width:100%;height:52px;
+  background:linear-gradient(135deg,#f5c842,#ff9f43);
+  color:#111;border:none;border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.abtn-out{
+  width:100%;height:50px;
+  background:transparent;border:1.5px solid var(--border);border-radius:14px;
+  font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.abtn-gold:active,.abtn-out:active{transform:scale(.98)}
+
+/* ── EMAIL ── */
+#se{background:var(--bg)}
+.e-header{
+  padding:56px 28px 28px;
+  background:radial-gradient(ellipse 100% 60% at 50% -10%,#1a1a40 0%,transparent 70%);
+  flex-shrink:0;
+}
+.e-header h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.e-header p{font-size:14px;color:var(--muted)}
+.e-body{padding:24px 28px;flex:1;overflow-y:auto}
+.ifield{
+  width:100%;background:var(--card);
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 18px;font-family:inherit;font-size:16px;
+  color:var(--text);outline:none;margin-bottom:14px;
+  transition:border-color .15s;
+}
+.ifield::placeholder{color:var(--muted)}
+.ifield:focus{border-color:var(--gold)}
+.privacy{
+  background:rgba(78,205,196,.07);border:1px solid rgba(78,205,196,.2);
+  border-radius:var(--radius-sm);padding:14px;
+  font-size:13px;color:var(--muted);line-height:1.65;
+  display:flex;gap:10px;margin-bottom:24px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:80px;left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);padding:12px 22px;border-radius:12px;
+  font-size:13px;font-weight:600;opacity:0;
+  transition:all .3s;z-index:999;white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── SECTION COLOUR ACCENTS ── */
+.sec-b{color:#a78bfa}
+.sec-c{color:#4ecdc4}
+.sec-d{color:#f5c842}
+.bg-b{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3)}
+.bg-c{background:rgba(78,205,196,.15);border-color:rgba(78,205,196,.3)}
+.bg-d{background:rgba(245,200,66,.15);border-color:rgba(245,200,66,.3)}
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME ══════════════════════════════════ -->
+<div id="sw" class="screen active">
+  <div class="scroll-body">
+    <div class="w-hero">
+      <div class="w-badge">🏗 CIDB Gred G1 – G5 &nbsp;·&nbsp; Percuma</div>
+      <div class="w-icon">📊</div>
+      <h1 class="w-title">Syarikat anda di<br><span>tahap mana?</span></h1>
+      <p class="w-sub">Alat Penilaian Kendiri Kematangan TQM<br>untuk Kontraktor Pembinaan Malaysia</p>
+    </div>
+    <div class="w-stats">
+      <div class="stat"><span class="stat-n">54</span><div class="stat-l">Soalan Mudah</div></div>
+      <div class="stat"><span class="stat-n">10'</span><div class="stat-l">Minit Sahaja</div></div>
+      <div class="stat"><span class="stat-n">5</span><div class="stat-l">Tahap Maturity</div></div>
+    </div>
+    <div class="w-bottom">
+      <h2>Tahu di mana anda berdiri.</h2>
+      <p>Ramai kontraktor G1–G5 bekerja keras tapi tidak tahu di mana kelemahan syarikat mereka. Alat ini membantu anda tahu — dan apa perlu dibuat seterusnya. Guna setiap kali projek siap.</p>
+      <ul class="steps">
+        <li><span class="sdot">1</span>Jawab berdasarkan apa yang syarikat anda BETUL-BETUL buat</li>
+        <li><span class="sdot">2</span>Sistem kira markah dan tentukan tahap kematangan anda</li>
+        <li><span class="sdot">3</span>Terima laporan peribadi dan senarai tindakan segera</li>
+      </ul>
+      <div style="padding-bottom:40px">
+        <button class="npri" style="width:100%;height:54px;font-size:16px;border-radius:16px" onclick="goProfile()">
+          Mula Sekarang &nbsp;→
+        </button>
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px">
+          Penyelidikan MSc Kejuruteraan Pembinaan · UiTM Shah Alam 2026<br>Mohd Hafeez Che Mat (2024601426)
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ══════════════════════════════════ -->
+<div id="sp" class="screen">
+  <div class="p-header">
+    <h2>Maklumat Syarikat</h2>
+    <p>2 soalan sahaja — 10 saat</p>
+  </div>
+  <div class="p-body">
+    <div class="fgroup">
+      <label class="flabel">Gred CIDB Syarikat Anda <span class="flabel-sub">(pilih satu)</span></label>
+      <div class="og5" id="grade-opts">
+        <button class="obtn" onclick="selGrade(this,'G1')">G1<span class="os">≤RM200K</span></button>
+        <button class="obtn" onclick="selGrade(this,'G2')">G2<span class="os">≤RM500K</span></button>
+        <button class="obtn" onclick="selGrade(this,'G3')">G3<span class="os">≤RM1M</span></button>
+        <button class="obtn" onclick="selGrade(this,'G4')">G4<span class="os">≤RM3M</span></button>
+        <button class="obtn" onclick="selGrade(this,'G5')">G5<span class="os">≤RM5M</span></button>
+      </div>
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Berapa lama syarikat beroperasi? <span class="flabel-sub">(pilih satu)</span></label>
+      <div class="og2" id="years-opts">
+        <button class="obtn" onclick="selYears(this,'Kurang 5 tahun')">Kurang 5 tahun</button>
+        <button class="obtn" onclick="selYears(this,'5 – 10 tahun')">5 – 10 tahun</button>
+        <button class="obtn" onclick="selYears(this,'11 – 20 tahun')">11 – 20 tahun</button>
+        <button class="obtn" onclick="selYears(this,'Lebih 20 tahun')">Lebih 20 tahun</button>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nbk" onclick="go('sw')">←</button>
+    <button class="npri" id="btn-go" disabled onclick="startQuiz()">Mulakan Soalan &nbsp;→</button>
+  </div>
+</div>
+
+<!-- ══ QUESTION ══════════════════════════════════ -->
+<div id="sq" class="screen">
+  <div class="q-header">
+    <div class="q-toprow">
+      <span class="q-sec" id="qs-label">Bahagian B</span>
+      <span class="q-count" id="qs-count">1 / 54</span>
+    </div>
+    <div class="pbar-out"><div class="pbar-in" id="pbar" style="width:2%"></div></div>
+  </div>
+  <div class="q-body scroll-body">
+    <span class="q-code" id="q-code">B1</span>
+    <p class="q-text" id="q-text"></p>
+    <div class="aopts" id="aopts"></div>
+  </div>
+  <div class="nav">
+    <button class="nbk" onclick="prevQ()">←</button>
+    <button class="npri" id="btn-nxt" disabled onclick="nextQ()">Seterusnya →</button>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══════════════════════════════════ -->
+<div id="sr" class="screen">
+  <div class="scroll-body">
+    <div class="r-hero">
+      <h2>Keputusan Anda 🎯</h2>
+      <p id="r-greet">Terima kasih kerana melengkapkan penilaian ini.</p>
+      <div class="overall-chip" id="r-overall">Tahap Keseluruhan: —</div>
+    </div>
+    <div class="r-body">
+      <div id="r-cards"></div>
+      <div class="icard">
+        <h3>⚡ 5 Tindakan Segera Untuk Anda</h3>
+        <div id="r-priority"></div>
+      </div>
+      <div class="icard" id="r-explain"></div>
+    </div>
+    <div class="r-actions">
+      <button class="abtn-gold" onclick="go('se')">📧 &nbsp;Hantar Laporan ke E-mel</button>
+      <button class="abtn-out" onclick="window.print()">🖨️ &nbsp;Cetak / Simpan PDF</button>
+      <button class="abtn-out" onclick="restart()">🔄 &nbsp;Mulakan Semula</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EMAIL ══════════════════════════════════ -->
+<div id="se" class="screen">
+  <div class="e-header">
+    <h2>Hantar Laporan</h2>
+    <p>Terima ringkasan dan senarai tindakan anda</p>
+  </div>
+  <div class="e-body">
+    <label class="flabel">Nama Anda</label>
+    <input class="ifield" id="e-name" type="text" placeholder="cth: Ahmad bin Razali">
+    <label class="flabel">Alamat E-mel</label>
+    <input class="ifield" id="e-mail" type="email" placeholder="cth: ahmad@syarikat.com">
+    <div class="privacy">🔒 Maklumat anda hanya digunakan untuk menghantar laporan ini dan tidak dikongsi kepada mana-mana pihak.</div>
+    <button class="abtn-gold" style="margin-bottom:12px" onclick="sendEmail()">Hantar Sekarang →</button>
+    <button class="abtn-out" onclick="go('sr')">← Kembali ke Keputusan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+const QUESTIONS = [
+  {code:"B1",section:"B",sectionName:"Amalan TQM",text:"Sebagai pemilik atau pengurus syarikat, adakah anda sendiri memastikan kerja yang dibuat memenuhi piawaian kualiti — bukan sekadar habis buat sahaja?"},
+  {code:"B2",section:"B",sectionName:"Amalan TQM",text:"Apabila ada keputusan berkaitan kualiti kerja yang perlu dibuat, adakah pengurusan atasan terlibat secara langsung dalam keputusan tersebut?"},
+  {code:"B3",section:"B",sectionName:"Amalan TQM",text:"Adakah pekerja-pekerja anda tahu dengan jelas apakah sasaran kualiti yang syarikat mahu capai untuk setiap projek?"},
+  {code:"B4",section:"B",sectionName:"Amalan TQM",text:"Adakah syarikat anda secara aktif membina budaya di mana semua orang — dari mandur hingga pekerja — menjaga kualiti kerja mereka?"},
+  {code:"B5",section:"B",sectionName:"Amalan TQM",text:"Adakah cara-cara kerja di syarikat anda dituliskan dengan jelas — contohnya ada dokumen atau arahan bertulis tentang bagaimana sesuatu kerja perlu dilakukan?"},
+  {code:"B6",section:"B",sectionName:"Amalan TQM",text:"Sebelum kerja di tapak bermula, adakah syarikat anda merancang semua aktiviti projek secara teratur — bukan sekadar buat satu-satu bila tiba masanya?"},
+  {code:"B7",section:"B",sectionName:"Amalan TQM",text:"Adakah ada penyeliaan di tapak bina yang memastikan kualiti kerja dikekalkan sepanjang projek — bukan hanya diperiksa bila ada masalah sahaja?"},
+  {code:"B8",section:"B",sectionName:"Amalan TQM",text:"Adakah pasukan projek anda berkomunikasi dengan berkesan tentang isu kualiti — contohnya ada mesyuarat tapak atau saluran komunikasi khusus untuk hal kualiti?"},
+  {code:"B9",section:"B",sectionName:"Amalan TQM",text:"Semasa membuat perancangan projek, adakah pertimbangan kualiti dimasukkan dalam perancangan tersebut — bukan ditambah hanya bila ada aduan kemudian?"},
+  {code:"B10",section:"B",sectionName:"Amalan TQM",text:"Jika CIDB atau klien datang untuk pemeriksaan mengejut esok hari, adakah anda boleh tunjukkan dokumen kualiti projek yang lengkap dan terkini?"},
+  {code:"B11",section:"B",sectionName:"Amalan TQM",text:"Adakah Prosedur Operasi Standard (SOP) tersedia di tapak bina — contohnya arahan bertulis tentang cara kerja tertentu perlu dilaksanakan?"},
+  {code:"B12",section:"B",sectionName:"Amalan TQM",text:"Adakah pekerja anda faham dan mengikut prosedur QMS (Sistem Pengurusan Kualiti) yang ada — bukan sekadar ada dokumen tapi tak diguna?"},
+  {code:"B13",section:"B",sectionName:"Amalan TQM",text:"Adakah syarikat anda menyimpan rekod projek secara teratur dan sistematik — termasuk gambar tapak, laporan kemajuan dan dokumen penerimaan kerja?"},
+  {code:"B15",section:"B",sectionName:"Amalan TQM",text:"Apabila memilih pembekal bahan binaan, adakah syarikat anda mengambil kira kualiti dan kebolehpercayaan pembekal tersebut — bukan hanya pilih yang paling murah?"},
+  {code:"B16",section:"B",sectionName:"Amalan TQM",text:"Adakah pekerja anda menerima latihan yang berkaitan dengan kerja mereka — contohnya latihan kemahiran teknikal, keselamatan atau pengurusan projek?"},
+  {code:"B17",section:"B",sectionName:"Amalan TQM",text:"Adakah anda menggalakkan pekerja untuk mencadangkan cara-cara baru bagi memperbaiki cara kerja — dan cadangan mereka diambil serius?"},
+  {code:"B18",section:"B",sectionName:"Amalan TQM",text:"Adakah syarikat anda ada pelan atau program untuk membangunkan kemahiran kakitangan secara sistematik — bukan latihan hanya bila ada masalah sahaja?"},
+  {code:"B19",section:"B",sectionName:"Amalan TQM",text:"Secara keseluruhan, adakah kemahiran tenaga kerja syarikat anda bertambah baik dari semasa ke semasa — bukan hanya kekal sama sahaja?"},
+  {code:"B21",section:"B",sectionName:"Amalan TQM",text:"Adakah syarikat anda mengkaji data prestasi projek secara berkala — contohnya tengok balik kos, masa siap dan kualiti — untuk kenal pasti apa yang boleh diperbaiki?"},
+  {code:"B22",section:"B",sectionName:"Amalan TQM",text:"Apabila projek tamat, adakah syarikat anda belajar daripada pengalaman tersebut — contohnya ada sesi post-mortem atau rekod pengajaran untuk projek akan datang?"},
+  {code:"C1",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah syarikat anda merancang projek secara sistematik untuk mengelakkan kelewatan — contohnya ada jadual kerja terperinci sebelum projek bermula?"},
+  {code:"C2",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah proses perancangan projek anda dikemaskini secara berkala sepanjang projek berlangsung — bukan hanya dibuat sekali di awal projek sahaja?"},
+  {code:"C3",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah anda memesan bahan binaan lebih awal untuk elak projek terhenti kerana bahan tak cukup atau lambat tiba?"},
+  {code:"C4",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah syarikat anda mengurus koordinasi antara semua pihak yang terlibat dalam projek — supaya tiada siapa yang tunggu kerja orang lain dan projek tak lambat?"},
+  {code:"C5",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah syarikat anda ada cara yang berkesan untuk mengawal kos projek — supaya perbelanjaan tidak lari dari anggaran yang ditetapkan?"},
+  {code:"C6",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah proses penganggaran kos projek anda jelas dan dipantau sepanjang projek — bukan sekadar buat anggaran di awal dan dilupakan?"},
+  {code:"C7",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah sumber-sumber projek (pekerja, bahan, peralatan) diurus dengan cekap untuk memastikan kos tidak membazir?"},
+  {code:"C8",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah kualiti kerjatangan pekerja anda memenuhi keperluan klien dan syarat kontrak — dengan sedikit atau tiada kerja baiki semula?"},
+  {code:"C9",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah syarikat anda melaksanakan pemeriksaan kualiti secara berkala di tapak bina — bukan hanya periksa kerja bila dah siap atau bila ada aduan?"},
+  {code:"C10",section:"C",sectionName:"Keupayaan Prestasi",text:"Sebelum kerja pembinaan bermula, adakah maklumat reka bentuk (lukisan, spesifikasi) disemak dan difahami oleh pasukan anda?"},
+  {code:"C11",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah syarikat anda merancang keperluan pekerja untuk setiap projek lebih awal — supaya tidak kekurangan atau kelebihan pekerja di tapak?"},
+  {code:"C12",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah anda mengenal pasti pekerja mahir yang boleh dipercayai dan berusaha mengekalkan mereka untuk projek-projek anda?"},
+  {code:"C13",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah rantaian bekalan bahan binaan anda diurus dengan baik — supaya tidak berlaku kekurangan bahan yang boleh menghentikan projek?"},
+  {code:"C14",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah ketersediaan peralatan dirancang dan dipantau — supaya peralatan yang diperlukan sedia ada bila diperlukan di tapak?"},
+  {code:"C15",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah anda mengurus koordinasi tapak antara kontraktor-kontraktor yang terlibat dalam projek yang sama — supaya kerja berjalan lancar?"},
+  {code:"C16",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah prestasi subkontraktor yang bekerja untuk anda dipantau dan dinilai — supaya anda tahu mana yang boleh dipercayai untuk projek akan datang?"},
+  {code:"C17",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah komunikasi antara semua pihak dalam projek anda berkesan — contohnya semua orang tahu tugas masing-masing dan maklumat sampai tepat pada masa?"},
+  {code:"C18",section:"C",sectionName:"Keupayaan Prestasi",text:"Apabila keputusan perlu dibuat semasa projek, adakah keputusan tersebut dibuat dengan cepat dan teratur — tanpa kelewatan yang boleh menjejaskan projek?"},
+  {code:"C19",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah pematuhan keselamatan di tapak bina anda dipantau dan dikuatkuasakan secara aktif — bukan sekadar ada papan tanda keselamatan sahaja?"},
+  {code:"C20",section:"C",sectionName:"Keupayaan Prestasi",text:"Adakah susun atur tapak dan aliran kerja anda dirancang untuk meminimumkan pembaziran masa dan tenaga — contohnya bahan diletakkan di tempat yang mudah dicapai?"},
+  {code:"D1",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah syarikat anda ada pelan atau hala tuju yang jelas untuk meningkatkan keupayaan organisasi dalam jangka masa 2-3 tahun akan datang — bukan sekadar ikut projek yang datang?"},
+  {code:"D2",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah kepimpinan syarikat anda secara aktif menyokong usaha untuk menjadikan syarikat lebih baik dari semasa ke semasa — bukan hanya fokus menyelesaikan projek semasa?"},
+  {code:"D3",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah pengurusan syarikat anda menyokong inisiatif untuk meningkatkan kemahiran dan keupayaan syarikat — contohnya membelanjakan wang untuk latihan atau sistem baharu?"},
+  {code:"D4",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah proses-proses dalam syarikat anda berjalan dengan konsisten — iaitu cara kerja yang sama digunakan untuk semua projek, bukan bergantung kepada siapa yang urus?"},
+  {code:"D5",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah syarikat anda ada sistem pemantauan dan penilaian prestasi yang dijalankan secara berkala — bukan hanya tengok balik bila ada masalah besar?"},
+  {code:"D6",section:"D",sectionName:"Kematangan Keupayaan",text:"Sebelum setiap projek bermula, adakah syarikat anda bersedia dengan secukupnya — pekerja tahu tugas, bahan dipesan, dan rancangan kerja sudah ada?"},
+  {code:"D7",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah syarikat anda terbuka untuk mencuba kaedah atau peralatan baharu yang boleh membantu kerja dibuat dengan lebih baik atau lebih cepat?"},
+  {code:"D8",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah anda menggunakan alatan digital asas untuk membantu kerja harian di tapak — contohnya WhatsApp untuk koordinasi, Excel untuk kos, atau aplikasi mudah untuk laporan?"},
+  {code:"D9",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah anda menggunakan sebarang alat (aplikasi, borang, sistem) untuk menjejak kemajuan projek dan memastikan komunikasi pasukan berjalan lancar?"},
+  {code:"D10",section:"D",sectionName:"Kematangan Keupayaan",text:"Jika berlaku sesuatu yang tidak dijangka dalam projek — contohnya hujan lebat, pekerja sakit, atau bahan lambat tiba — adakah syarikat anda bersedia untuk mengatasinya tanpa projek terhenti lama?"},
+  {code:"D11",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah syarikat anda mengenal pasti dan mengurus risiko projek secara sistematik — contohnya ada senarai risiko yang mungkin berlaku dan cara untuk mengatasinya?"},
+  {code:"D12",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah syarikat anda mempunyai petunjuk prestasi utama (KPI) yang jelas — contohnya sasaran masa siap, kos, dan kualiti — dan KPI ini dipantau secara berkala?"},
+  {code:"D13",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah hasil pengukuran prestasi syarikat anda digunakan untuk membuat keputusan — contohnya tentukan projek mana nak ambil, berapa harga nak sebut, atau di mana nak baiki?"},
+  {code:"D14",section:"D",sectionName:"Kematangan Keupayaan",text:"Adakah anda menggunakan petunjuk kewangan (contohnya untung bersih, aliran tunai, nisbah kos) untuk mengawal dan membuat keputusan tentang syarikat anda?"},
+];
+
+const ANSWERS=[
+  {s:1,l:"Tidak langsung / Belum ada"},
+  {s:2,l:"Kadang-kadang, tapi tidak konsisten"},
+  {s:3,l:"Ada, tapi boleh ditingkatkan lagi"},
+  {s:4,l:"Ya, selalu kami buat"},
+  {s:5,l:"Ya, ini sudah menjadi amalan tetap kami"},
+];
+
+const LEVELS=[
+  {min:1,max:2.49,n:1,lbl:"Reaktif",cls:"l1",bar:"#ff6b6b",
+   desc:"Syarikat anda masih beroperasi secara reaktif. Tiada sistem yang teratur — tindak balas kepada masalah apabila timbul sahaja."},
+  {min:2.5,max:3.49,n:2,lbl:"Asas",cls:"l2",bar:"#ff9f43",
+   desc:"Ada asas yang baik, tetapi pelaksanaan tidak konsisten. Sesetengah amalan ada tapi tidak dijalankan secara sistematik."},
+  {min:3.5,max:3.99,n:3,lbl:"Ditakrifkan",cls:"l3",bar:"#f5c842",
+   desc:"Proses ditakrifkan dan diikuti. Anda berada di landasan yang betul — teruskan memantapkan sistem yang ada."},
+  {min:4,max:4.49,n:4,lbl:"Diurus",cls:"l4",bar:"#4ecdc4",
+   desc:"Operasi diurus dengan baik dan konsisten. Tumpukan pada dimensi strategik dan teknologi untuk naik tahap."},
+  {min:4.5,max:5,n:5,lbl:"Dioptimumkan",cls:"l5",bar:"#7bed9f",
+   desc:"Kematangan tinggi. Amalan TQM, prestasi dan keupayaan sudah dilembagakan sepenuhnya."},
+];
+
+const TIPS={
+  B1:"Luangkan masa setiap minggu untuk semak kualiti kerja secara peribadi.",
+  B2:"Libatkan diri dalam keputusan kualiti projek, bukan serah sepenuhnya kepada penyelia.",
+  B3:"Terangkan kepada pekerja standard kualiti yang anda jangkakan sebelum kerja bermula.",
+  B4:"Puji pekerja yang buat kerja berkualiti — ini membina budaya kualiti secara semula jadi.",
+  B5:"Tulis cara kerja standard untuk 3 jenis kerja utama syarikat anda dalam sebulan ini.",
+  B6:"Buat jadual kerja ringkas untuk setiap projek sebelum bermula — 1 muka surat sudah cukup.",
+  B7:"Pastikan ada penyelia yang periksa kualiti kerja setiap hari di tapak bina.",
+  B8:"Adakan perbincangan ringkas 10 minit setiap pagi dengan pasukan tapak.",
+  B9:"Masukkan senarai semak kualiti dalam templat perancangan projek anda.",
+  B10:"Minta penyelia kemaskini fail projek setiap minggu — gambar, kemajuan, isu.",
+  B11:"Buat SOP ringkas untuk 2-3 kerja utama syarikat anda dan letak di tapak bina.",
+  B12:"Jalankan sesi singkat setiap bulan untuk ingatkan pekerja tentang prosedur kerja.",
+  B13:"Gunakan folder Google Drive atau fail fizikal untuk simpan dokumen projek secara teratur.",
+  B15:"Buat senarai 3-5 pembekal yang boleh dipercayai — jangan bergantung pada satu pembekal.",
+  B16:"Daftarkan sekurang-kurangnya seorang pekerja untuk kursus CIDB tahun ini.",
+  B17:"Tanya pekerja: 'Apa yang boleh kita buat lebih baik?' dan tindak balas cadangan mereka.",
+  B18:"Buat pelan latihan tahunan ringkas untuk setiap pekerja tetap anda.",
+  B19:"Kenal pasti satu kemahiran yang perlu dipertingkatkan dan ambil tindakan bulan ini.",
+  B21:"Semak kos, masa dan kualiti setiap projek selepas tamat — tulis dalam fail projek.",
+  B22:"Selepas projek, tulis 3 perkara yang berjalan baik dan 3 perkara yang perlu diperbaiki.",
+  C1:"Buat jadual kerja terperinci sebelum projek bermula — termasuk tarikh siap setiap fasa.",
+  C2:"Semak semula jadual projek setiap minggu dan kemas kini jika ada perubahan.",
+  C3:"Pesan bahan binaan utama sekurang-kurangnya 2 minggu sebelum diperlukan.",
+  C4:"Adakan mesyuarat koordinasi ringkas antara semua pihak projek sekali seminggu.",
+  C5:"Gunakan hamparan Excel mudah untuk jejak perbelanjaan sebenar berbanding anggaran.",
+  C6:"Semak anggaran kos setiap 2 minggu dan kenal pasti mana yang terlebih belanja.",
+  C7:"Rancang penggunaan pekerja dan bahan untuk setiap minggu supaya tiada pembaziran.",
+  C8:"Buat senarai semak kualiti untuk setiap jenis kerja dan tanda sebelum hantar kepada klien.",
+  C9:"Jalankan pemeriksaan kualiti formal sekurang-kurangnya sekali seminggu di tapak bina.",
+  C10:"Pastikan semua pekerja fahami lukisan dan spesifikasi sebelum kerja bermula.",
+  C11:"Rancang bilangan pekerja yang diperlukan untuk setiap fasa projek jauh lebih awal.",
+  C12:"Bina hubungan baik dengan 3-5 pekerja mahir yang boleh anda hubungi bila diperlukan.",
+  C13:"Simpan stok bahan asas yang cukup untuk 2 minggu kerja di tapak bina.",
+  C14:"Buat jadual penyelenggaraan dan ketersediaan peralatan untuk setiap projek.",
+  C15:"Tetapkan satu orang sebagai penyelaras tapak untuk koordinasi antara kontraktor.",
+  C16:"Nilai prestasi subkontraktor selepas setiap projek dan simpan rekod untuk rujukan.",
+  C17:"Gunakan WhatsApp Group khusus untuk setiap projek — kongsi semua maklumat penting di sana.",
+  C18:"Tetapkan had masa untuk membuat keputusan — jangan biarkan isu tertangguh lebih dari 24 jam.",
+  C19:"Jalankan taklimat keselamatan ringkas setiap pagi sebelum kerja bermula.",
+  C20:"Rancang susun atur tapak sebelum projek bermula — letak bahan di tempat mudah dicapai.",
+  D1:"Luangkan 2 jam untuk tulis hala tuju syarikat anda untuk 2 tahun akan datang.",
+  D2:"Tetapkan satu matlamat penambahbaikan syarikat setiap suku tahun dan semak kemajuannya.",
+  D3:"Peruntukkan sebahagian keuntungan projek untuk latihan dan pembangunan syarikat.",
+  D4:"Dokumentasikan cara kerja standard supaya hasil kerja konsisten tanpa bergantung kepada individu.",
+  D5:"Buat senarai semak prestasi bulanan untuk semak sama ada syarikat berjalan mengikut sasaran.",
+  D6:"Buat senarai semak persediaan projek standard dan pastikan semua ditanda sebelum bermula.",
+  D7:"Cuba satu alat atau kaedah baharu untuk projek seterusnya.",
+  D8:"Gunakan WhatsApp lebih terstruktur — folder foto projek, kemas kini harian, fail dokumen.",
+  D9:"Cuba Google Sheets untuk jejak kemajuan projek secara visual.",
+  D10:"Buat senarai 5 risiko utama yang paling kerap berlaku dan rancang cara mengatasinya.",
+  D11:"Sebelum setiap projek, kenal pasti 3 risiko utama dan tetapkan rancangan tindak balas.",
+  D12:"Tetapkan 3 KPI mudah: masa siap, kos dalam anggaran, aduan klien = sifar.",
+  D13:"Gunakan data kos dan masa projek lepas untuk buat keputusan sebut harga projek baharu.",
+  D14:"Semak keuntungan bersih dan aliran tunai syarikat setiap bulan.",
+};
+
+// ══════════════════════════════════════════════════════
+// STATE & NAV
+// ══════════════════════════════════════════════════════
+let S={grade:null,years:null,q:0,ans:new Array(54).fill(null)};
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goProfile(){go('sp')}
+
+function selGrade(el,g){
+  S.grade=g;
+  document.querySelectorAll('#grade-opts .obtn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  checkReady();
+}
+function selYears(el,y){
+  S.years=y;
+  document.querySelectorAll('#years-opts .obtn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  checkReady();
+}
+function checkReady(){
+  document.getElementById('btn-go').disabled=!(S.grade&&S.years);
+}
+function startQuiz(){S.q=0;renderQ();go('sq')}
+
+// ══════════════════════════════════════════════════════
+// QUESTION LOGIC
+// ══════════════════════════════════════════════════════
+const SEC_LABELS={
+  B:"Bahagian B — Amalan TQM",
+  C:"Bahagian C — Keupayaan Prestasi",
+  D:"Bahagian D — Kematangan Keupayaan"
+};
+const SEC_CLS={B:"sec-b",C:"sec-c",D:"sec-d"};
+
+function renderQ(){
+  const q=QUESTIONS[S.q];
+  const pct=Math.max(Math.round((S.q/QUESTIONS.length)*100),2);
+
+  document.getElementById('qs-label').textContent=SEC_LABELS[q.section];
+  document.getElementById('qs-label').className='q-sec '+SEC_CLS[q.section];
+  document.getElementById('qs-count').textContent=`${S.q+1} / ${QUESTIONS.length}`;
+  document.getElementById('pbar').style.width=pct+'%';
+
+  const codeEl=document.getElementById('q-code');
+  codeEl.textContent=q.code;
+  codeEl.className='q-code '+(q.section==='B'?'bg-b':q.section==='C'?'bg-c':'bg-d');
+  document.getElementById('q-text').textContent=q.text;
+
+  const cont=document.getElementById('aopts');
+  cont.innerHTML='';
+  ANSWERS.forEach(a=>{
+    const btn=document.createElement('button');
+    btn.className='abtn'+(S.ans[S.q]===a.s?' sel':'');
+    btn.innerHTML=`<div class="ascore">${a.s}</div><div class="alabel">${a.l}</div>`;
+    btn.onclick=()=>pickAns(a.s);
+    cont.appendChild(btn);
+  });
+
+  const nxt=document.getElementById('btn-nxt');
+  nxt.disabled=S.ans[S.q]===null;
+  nxt.innerHTML=S.q===QUESTIONS.length-1?'Lihat Keputusan 🎯':'Seterusnya →';
+}
+
+function pickAns(score){
+  S.ans[S.q]=score;
+  document.querySelectorAll('.abtn').forEach((b,i)=>{
+    b.classList.toggle('sel',ANSWERS[i].s===score);
+  });
+  document.getElementById('btn-nxt').disabled=false;
+}
+function nextQ(){
+  if(S.q<QUESTIONS.length-1){S.q++;renderQ();document.querySelector('#sq .q-body').scrollTop=0;}
+  else{calcResults();go('sr');}
+}
+function prevQ(){
+  if(S.q>0){S.q--;renderQ();}
+  else go('sp');
+}
+
+// ══════════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════════
+function lvl(mean){return LEVELS.find(l=>mean>=l.min&&mean<=l.max)||LEVELS[0]}
+
+function calcResults(){
+  const secs=[
+    {k:"B",name:"Amalan TQM",sub:"Kepimpinan · Proses · Dokumentasi · Latihan · Penambahbaikan",start:0,end:20},
+    {k:"C",name:"Keupayaan Prestasi",sub:"Masa · Kos · Kualiti · Sumber · Koordinasi · Keselamatan",start:20,end:40},
+    {k:"D",name:"Kematangan Keupayaan",sub:"Strategik · Operasi · Digital · Ketahanan · KPI",start:40,end:54},
+  ];
+
+  let totalSum=0,totalN=0,lowItems=[];
+  const cards=document.getElementById('r-cards');
+  cards.innerHTML='';
+
+  secs.forEach(sec=>{
+    const scores=S.ans.slice(sec.start,sec.end);
+    const sum=scores.reduce((a,b)=>a+(b||0),0);
+    const mean=sum/scores.length;
+    const lv=lvl(mean);
+    totalSum+=sum;totalN+=scores.length;
+
+    scores.forEach((sc,i)=>{
+      if(sc!==null) lowItems.push({code:QUESTIONS[sec.start+i].code,score:sc});
+    });
+
+    const pct=((mean-1)/4)*100;
+    const card=document.createElement('div');
+    card.className='rcard';
+    card.innerHTML=`
+      <div class="rcard-top">
+        <div>
+          <div class="rcard-title">Bahagian ${sec.k}: ${sec.name}</div>
+          <div class="rcard-sub">${sec.sub}</div>
+        </div>
+        <span class="lchip ${lv.cls}">Tahap ${lv.n}: ${lv.lbl}</span>
+      </div>
+      <div class="ptrack"><div class="pfill" style="width:${pct}%;background:${lv.bar}"></div></div>
+      <div class="rcard-footer">
+        <span>Min: <strong>${mean.toFixed(2)}</strong></span>
+        <span>Skor: <strong>${sum}</strong> / ${scores.length*5}</span>
+      </div>`;
+    cards.appendChild(card);
+  });
+
+  // Overall
+  const oMean=totalSum/totalN;
+  const oLv=lvl(oMean);
+  document.getElementById('r-overall').textContent=`Tahap ${oLv.n} — ${oLv.lbl}  (Min: ${oMean.toFixed(2)})`;
+  document.getElementById('r-greet').textContent=
+    `Kontraktor Gred ${S.grade} · ${S.years} beroperasi · ${QUESTIONS.length} soalan dijawab`;
+
+  // Priority (5 lowest)
+  lowItems.sort((a,b)=>a.score-b.score);
+  const pri=document.getElementById('r-priority');
+  pri.innerHTML='';
+  lowItems.slice(0,5).forEach(item=>{
+    const tip=TIPS[item.code]||"Kenal pasti cara untuk meningkatkan amalan ini.";
+    const d=document.createElement('div');
+    d.className='pitem';
+    d.innerHTML=`<div class="pitem-label">⚠ ${item.code} — Skor ${item.score}/5</div>${tip}`;
+    pri.appendChild(d);
+  });
+
+  // Level explanation
+  document.getElementById('r-explain').innerHTML=`
+    <h3>📖 Apa Maksud Tahap Ini?</h3>
+    <div class="iitem">
+      <div class="iico">📍</div>
+      <div class="itxt"><strong>Tahap ${oLv.n}: ${oLv.lbl}</strong>${oLv.desc}</div>
+    </div>
+    <div class="iitem">
+      <div class="iico">🎯</div>
+      <div class="itxt"><strong>Matlamat Seterusnya</strong>Tumpukan pada 5 item skor terendah di atas. Perbaiki satu setiap bulan dan gunakan alat ini semula selepas projek seterusnya siap.</div>
+    </div>
+    <div class="iitem">
+      <div class="iico">📅</div>
+      <div class="itxt"><strong>Bila Nak Nilai Semula?</strong>Setiap kali projek siap — atau sekurang-kurangnya sekali setahun. Simpan keputusan ini untuk perbandingan.</div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// EMAIL & UTILS
+// ══════════════════════════════════════════════════════
+function sendEmail(){
+  const name=document.getElementById('e-name').value.trim();
+  const mail=document.getElementById('e-mail').value.trim();
+  if(!name||!mail){toast('Sila lengkapkan nama dan e-mel anda.');return}
+  if(!mail.includes('@')){toast('Sila masukkan e-mel yang sah.');return}
+  toast('✅ Laporan dihantar ke '+mail);
+  setTimeout(()=>go('sr'),2200);
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function restart(){
+  S={grade:null,years:null,q:0,ans:new Array(54).fill(null)};
+  document.querySelectorAll('.obtn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('btn-go').disabled=true;
+  go('sw');
+}
+</script>
+</body>
+</html>
